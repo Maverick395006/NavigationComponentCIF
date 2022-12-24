@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.maverick.navigationcomponentcif.databinding.FragmentLoginBinding
 
 class LoginFragment:Fragment() {
@@ -27,6 +28,11 @@ class LoginFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnConfirm.setOnClickListener{
+            val username = binding.etUserName.text.toString()
+            val password = binding.etPassword.text.toString()
+
+            val action = LoginFragmentDirections.actionLoginFragmentToWelcomeFragment(username,password)
+            findNavController().navigate(action)
 
         }
 

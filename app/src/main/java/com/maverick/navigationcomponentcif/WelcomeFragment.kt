@@ -6,18 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.maverick.navigationcomponentcif.databinding.FragmentHomeBinding
+import androidx.navigation.fragment.navArgs
+import com.maverick.navigationcomponentcif.databinding.FragmentWelcomeBinding
 
-class HomeFragment:Fragment() {
+class WelcomeFragment:Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentWelcomeBinding? = null
     private val binding get() = _binding!!
+
+    private val args:WelcomeFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding =FragmentHomeBinding.inflate(inflater,container,false)
+        _binding =FragmentWelcomeBinding.inflate(inflater,container,false)
 
 
 
@@ -27,9 +30,13 @@ class HomeFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnLogin.setOnClickListener{
+        binding.tvUserName.text = args.username
+        binding.tvPassword.text = args.password
 
-            findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+        binding.btnOk.setOnClickListener{
+
+            val action = WelcomeFragmentDirections.actionWelcomeFragmentToHomeFragment()
+            findNavController().navigate(action)
 
         }
 
