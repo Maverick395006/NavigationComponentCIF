@@ -5,13 +5,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import com.maverick.navigationcomponentcif.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -25,8 +21,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        /**
+         * pass drawer_layout id to get hamburger icon
+         */
+
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.homeFragment, R.id.searchFragment)
+            setOf(R.id.homeFragment, R.id.searchFragment), binding.drawerLayout
         )
 
         val navHostFragment =
@@ -34,12 +34,17 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.findNavController()
 
         setSupportActionBar(binding.toolbar)
-        setupActionBarWithNavController(navController,appBarConfiguration)
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         /**
          * BottomNavigationView
          */
         binding.bottomNav.setupWithNavController(navController)
+
+        /**
+         * NavigationDrawerView
+         */
+        binding.navDrawer.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -51,13 +56,13 @@ class MainActivity : AppCompatActivity() {
         return if (item.itemId == R.id.termsAndConditions) {
             val action = NavGraphDirections.actionGlobalTermsFragment()
             navController.navigate(action)
-            return true
+            true
         } else {
-            return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+            item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
